@@ -1,0 +1,25 @@
+{
+  "name": "news-app",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Amr Abulseoud",
+  "license": "MIT",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "dev:backend": "yarn --cwd packages/backend run start:dev ",
+    "dev:frontend": "yarn --cwd packages/frontend run dev"
+  },
+  "private": true,
+  "prettier": {
+    "singleQuote": false,
+    "trailingComma": "all",
+    "semi": true,
+    "tabWidth": 2,
+    "bracketSpacing": true
+  },
+  "devDependencies": {
+    "prettier": "^2.0.5"
+  }
+}
