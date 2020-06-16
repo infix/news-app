@@ -3,6 +3,8 @@ import { AppService } from "./app.service";
 import { MongooseModule } from "@nestjs/mongoose";
 import { GraphQLModule } from "@nestjs/graphql";
 
+import { UserModule } from "./user/user.module";
+
 @Module({
   imports: [
     MongooseModule.forRoot("mongodb://localhost/news-app"),
@@ -10,6 +12,7 @@ import { GraphQLModule } from "@nestjs/graphql";
       autoSchemaFile: true,
       playground: true,
     }),
+    UserModule,
   ],
   controllers: [],
   providers: [AppService],
