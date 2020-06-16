@@ -3,6 +3,7 @@ import { AppService } from "./app.service";
 import { MongooseModule } from "@nestjs/mongoose";
 import { GraphQLModule } from "@nestjs/graphql";
 
+import { AuthModule } from "./auth/auth.module";
 import { UserModule } from "./user/user.module";
 
 @Module({
@@ -12,6 +13,7 @@ import { UserModule } from "./user/user.module";
       autoSchemaFile: true,
       playground: true,
     }),
+    AuthModule,
     UserModule,
   ],
   controllers: [],
