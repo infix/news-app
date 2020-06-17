@@ -6,13 +6,26 @@ import { Login } from "./pages/Login";
 import { Register } from "./pages/Register";
 import { Favourites } from "./pages/Favourites";
 
+import { ApolloProvider } from "@apollo/react-hooks";
+import { apolloClient } from "./apolloClient";
+
 export const App = () => (
-  <Router>
-    <Switch>
-      <Route path="/" exact render={NewsPage} />
-      <Route path="/login" render={Login} />
-      <Route path="/register" render={Register} />
-      <Route path="/favourites" render={Favourites} />
-    </Switch>
-  </Router>
+  <ApolloProvider client={apolloClient}>
+    <Router>
+      <Switch>
+        <Route path="/" exact>
+          <NewsPage />
+        </Route>
+        <Route path="/login">
+          <Login />
+        </Route>
+        <Route path="/register">
+          <Register />
+        </Route>
+        <Route path="/favourites">
+          <Favourites />
+        </Route>
+      </Switch>
+    </Router>
+  </ApolloProvider>
 );
