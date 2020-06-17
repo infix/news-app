@@ -34,4 +34,14 @@ export class NewsResolver {
     await this.userService.addToFavourites(user, article);
     return "Added";
   }
+
+  @Mutation(() => String)
+  @UseGuards(GqlAuthGuard)
+  async removeFromFavourites(
+    @CurrentUser() user: User,
+    @Args("url") url: string,
+  ) {
+    await this.userService.removeFromFavourites(user, url);
+    return "removed";
+  }
 }
