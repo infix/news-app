@@ -3,6 +3,7 @@ import { UserService } from "../user/user.service";
 import { User } from "../user/user.schema";
 import * as bcrypt from "bcryptjs";
 import { JwtService } from "@nestjs/jwt";
+import { GraphQLError } from "graphql";
 
 @Injectable()
 export class AuthService {
@@ -22,5 +23,12 @@ export class AuthService {
   async login(user: User): Promise<string> {
     // @ts-ignore
     return this.jwtService.sign(user._doc);
+  }
+
+  async register(email: string, password: string): Promise<User> {
+    const user = await this.userService.findByEmail(email);
+    if (user) throw new GraphQLError("User Already Exists");
+    const hashedPassword = await bcrypt.hash(password, 10);
+    return await this.userService.create(email, hashedPassword);
   }
 }
