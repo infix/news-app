@@ -1,13 +1,13 @@
 import { Injectable } from "@nestjs/common";
 import { default as axios } from "axios";
 import { ConfigService } from "@nestjs/config";
-import { Article } from "./article.dto";
+import { ArticleDTO } from "./article.dto";
 
 export type NewsCategory = "business" | "sports";
 export type NewsCountry = "eg" | "ae";
 
 type NewsResponse = {
-  data: { status: string; totalResults: number; articles: Article[] };
+  data: { status: string; totalResults: number; articles: ArticleDTO[] };
 };
 
 @Injectable()
@@ -22,7 +22,7 @@ export class NewsService {
   async getNews(
     category: NewsCategory,
     country: NewsCountry,
-  ): Promise<Article[]> {
+  ): Promise<ArticleDTO[]> {
     const url = `${this.baseUrl}?country=${country}&category=${category}&apiKey=${this.apiKey}`;
     const newsResponse = await axios.get<any, NewsResponse>(url);
     return newsResponse.data.articles;
