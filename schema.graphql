@@ -1,0 +1,53 @@
+# This file was generated based on ".graphqlconfig". Do not edit manually.
+
+schema {
+  query: Query
+  mutation: Mutation
+}
+
+type ArticleOutput {
+  author: String
+  content: String
+  publishedAt: String
+  source: ArticleSourceOutput
+  title: String
+  url: String
+  urlToImage: String
+}
+
+type ArticleSourceOutput {
+  id: String
+  name: String
+}
+
+type AuthResultDTO {
+  _id: String!
+  email: String!
+  token: String!
+}
+
+type Mutation {
+  addToFavourites(article: ArticleInput!): String!
+  login(email: String!, password: String!): AuthResultDTO!
+  register(dateOfBirth: String!, email: String!, name: String!): String!
+  removeFromFavourites(url: String!): String!
+}
+
+type Query {
+  news(category: String!, country: String!): [ArticleOutput!]!
+}
+
+input ArticleInput {
+  author: String
+  content: String
+  publishedAt: String
+  source: ArticleSourceInput
+  title: String
+  url: String
+  urlToImage: String
+}
+
+input ArticleSourceInput {
+  id: String
+  name: String
+}
