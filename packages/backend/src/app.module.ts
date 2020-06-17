@@ -5,7 +5,7 @@ import { GraphQLModule } from "@nestjs/graphql";
 
 import { AuthModule } from "./auth/auth.module";
 import { UserModule } from "./user/user.module";
-import { ConfigModule, ConfigService } from "@nestjs/config";
+import { ConfigModule } from "@nestjs/config";
 
 @Module({
   imports: [
@@ -14,6 +14,7 @@ import { ConfigModule, ConfigService } from "@nestjs/config";
     GraphQLModule.forRoot({
       autoSchemaFile: true,
       playground: true,
+      context: ({ req }) => ({ req }),
     }),
     AuthModule,
     UserModule,
