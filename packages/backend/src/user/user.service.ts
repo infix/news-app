@@ -2,6 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { User } from "./user.schema";
 import { Model } from "mongoose";
+import { Article } from "../news/article.schema";
 
 @Injectable()
 export class UserService {
@@ -16,5 +17,12 @@ export class UserService {
 
   async create(email: string, password: string) {
     return this.userModel.create({ email, password, favourites: [] });
+  }
+
+  async addToFavourites({ _id }: User, article: Article) {
+    const user = await this.userModel.findOne({ _id });
+    user.favourites.push(article);
+    await user.save();
+    return user;
   }
 }
