@@ -14,9 +14,14 @@ export class AuthResolver {
   ) {}
 
   @Mutation((returns) => String)
-  async register(@Args("email") email: string) {
+  async register(
+    @Args("email") email: string,
+    @Args("name") name: string,
+    @Args("dateOfBirth") dateOfBirth: string,
+  ) {
     const password = this.passwordService.generate();
-    await this.authService.register(email, password);
+    const userData: any = { email, password, name, dateOfBirth };
+    await this.authService.register(userData);
     await this.sendRegistrationEmail(email, password);
     return "Check your email";
   }

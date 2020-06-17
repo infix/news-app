@@ -8,6 +8,12 @@ export class User extends mongoose.Document {
   email: string;
 
   @Prop()
+  name: string;
+
+  @Prop()
+  dateOfBirth: string;
+
+  @Prop()
   password: string;
 
   @Prop(

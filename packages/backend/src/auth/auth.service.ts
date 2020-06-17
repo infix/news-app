@@ -25,10 +25,10 @@ export class AuthService {
     return this.jwtService.sign(user._doc);
   }
 
-  async register(email: string, password: string): Promise<User> {
-    const user = await this.userService.findByEmail(email);
+  async register(userData: Omit<User, "favourites">): Promise<User> {
+    const user = await this.userService.findByEmail(userData.email);
     if (user) throw new GraphQLError("User Already Exists");
-    const hashedPassword = await bcrypt.hash(password, 10);
-    return await this.userService.create(email, hashedPassword);
+    const hashedPassword = await bcrypt.hash(userData.password, 10);
+    return await this.userService.create(userData, hashedPassword);
   }
 }

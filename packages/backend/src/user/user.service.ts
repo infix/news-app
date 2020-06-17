@@ -15,8 +15,8 @@ export class UserService {
     return this.userModel.findOne({ email });
   }
 
-  async create(email: string, password: string) {
-    return this.userModel.create({ email, password, favourites: [] });
+  async create(userData: Omit<User, "favourites">, password: string) {
+    return this.userModel.create({ ...userData, password, favourites: [] });
   }
 
   async addToFavourites({ _id }: User, article: Article) {
