@@ -9,7 +9,7 @@
   ],
   "scripts": {
     "dev:backend": "yarn --cwd packages/backend run start:dev ",
-    "dev:frontend": "yarn --cwd packages/frontend run dev"
+    "dev:frontend": "yarn --cwd packages/frontend run start"
   },
   "private": true,
   "prettier": {
