@@ -13,4 +13,8 @@ export class UserService {
   async findByEmail(email: string): Promise<User | undefined> {
     return this.userModel.findOne({ email });
   }
+
+  async create(email: string, password: string) {
+    return this.userModel.create({ email, password, favourites: [] });
+  }
 }
