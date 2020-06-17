@@ -3,6 +3,7 @@ import { EmailService } from "../email/email.service";
 import { PasswordGenerationService } from "./passwordGeneration.service";
 import { GraphQLError } from "graphql";
 import { AuthService } from "./auth.service";
+import { AuthResultDTO } from "./dtos/AuthResult.dto";
 
 @Resolver("Auth")
 export class AuthResolver {
@@ -27,5 +28,16 @@ export class AuthResolver {
     } catch (e) {
       throw new GraphQLError("Something went wrong :(");
     }
+  }
+
+  @Mutation((returns) => AuthResultDTO)
+  async login(
+    @Args("email") email: string,
+    @Args("password") password: string,
+  ): Promise<AuthResultDTO> {
+    const user = await this.authService.validateUser(email, password);
+    if (!user) throw new GraphQLError("Incorrect email or password");
+    const token = await this.authService.login(user);
+    return { email: user.email, _id: user._id, token };
   }
 }
