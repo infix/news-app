@@ -7,6 +7,7 @@ import { PasswordGenerationService } from "./passwordGeneration.service";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { AuthResolver } from "./auth.resolver";
 import { EmailModule } from "../email/email.module";
+import { JwtStrategy } from "./jwt.strategy";
 
 @Module({
   imports: [
@@ -22,6 +23,11 @@ import { EmailModule } from "../email/email.module";
       inject: [ConfigService],
     }),
   ],
-  providers: [AuthService, AuthResolver, PasswordGenerationService],
+  providers: [
+    JwtStrategy,
+    AuthService,
+    AuthResolver,
+    PasswordGenerationService,
+  ],
 })
 export class AuthModule {}
