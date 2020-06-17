@@ -6,7 +6,7 @@ import { Login } from "./pages/Login";
 import { Register } from "./pages/Register";
 import { Favourites } from "./pages/Favourites";
 
-const App = () => (
+export const App = () => (
   <Router>
     <Switch>
       <Route path="/" exact render={NewsPage} />
@@ -16,5 +16,3 @@ const App = () => (
     </Switch>
   </Router>
 );
-
-export default App;
