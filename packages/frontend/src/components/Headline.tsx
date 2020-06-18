@@ -8,12 +8,17 @@ export const Headline: React.FC<{ article: Article }> = ({ article }) => {
     <Card
       cover={<img alt="example" src={article.urlToImage} />}
       style={{ width: "100%", margin: "0.5rem 0" }}
-      actions={[<HeartOutlined key="heart" />, <LinkOutlined key="source" />]}
+      actions={[
+        <HeartOutlined key="heart" />,
+        <LinkOutlined
+          key="source"
+          onClick={() => window.open(article.url, "_blank")}
+        />,
+      ]}
     >
       <Card.Meta
-        title={article.title}
+        title={<p style={{ textAlign: "center" }}>{article.title}</p>}
         description={article.content}
-        avatar={() => <Typography.Text>{article.author}</Typography.Text>}
       />
 
       <Typography.Text type="secondary">
