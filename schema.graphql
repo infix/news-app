@@ -34,6 +34,7 @@ type Mutation {
 }
 
 type Query {
+  favourites: [ArticleOutput!]!
   news(category: String!, country: String!): [ArticleOutput!]!
 }
 

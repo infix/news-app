@@ -32,8 +32,17 @@ export class UserService {
       .populate("favourites")
       .exec();
 
-    user.favourites = user.favourites.filter((article) => article.url != url);
+    user.favourites = user.favourites.filter(article => article.url != url);
     await user.save();
     return user;
+  }
+
+  async getFavourites(userId: string) {
+    const user = await this.userModel
+      .findOne({ _id: userId })
+      .populate("favourites")
+      .exec();
+
+    return user.favourites;
   }
 }
