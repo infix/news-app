@@ -1,8 +1,20 @@
-import { Button, DatePicker, Form, Input, Layout, Typography } from "antd";
-import { MailOutlined, UserOutlined } from "@ant-design/icons";
+import { Button, Form, Input, Layout, notification, Typography } from "antd";
+import { UserOutlined, MailOutlined } from "@ant-design/icons";
+import gql from "graphql-tag";
+import { useMutation } from "@apollo/react-hooks";
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { Rule } from "antd/lib/form";
+import { DatePicker } from "antd";
+
+const REGISTER_MUTATION = gql`
+  mutation REGISTER($email: String!, $name: String!, $dateOfBirth: String!) {
+    register(email: $email, name: $name, dateOfBirth: $dateOfBirth)
+  }
+`;
+
+type RegisterData = { register: string };
+type RegisterVars = { email: string; name: string; dateOfBirth: string };
 
 const validationRules: { [k: string]: Rule[] } = {
   email: [
@@ -14,6 +26,22 @@ const validationRules: { [k: string]: Rule[] } = {
 };
 
 export const Register = () => {
+  const router = useHistory();
+  const [register, { loading, error, data }] = useMutation<
+    RegisterData,
+    RegisterVars
+  >(REGISTER_MUTATION);
+
+  if (data && data.register) {
+    notification.success({
+      key: "check-your-email",
+      message: "Check your email",
+      description: "Registered Successfully, We've emailed your password!",
+      duration: null,
+    });
+    router.replace("/login");
+  }
+
   return (
     <Layout style={{ minHeight: "100vh", alignItems: "center" }}>
       <Layout.Content
@@ -24,27 +52,49 @@ export const Register = () => {
           padding: "1rem",
         }}
       >
-        <Form name="register">
+        <Form
+          onFinish={(variables: any) => {
+            register({ variables }).catch(e => e);
+          }}
+          name="register"
+        >
           <Typography.Title level={4}>Register</Typography.Title>
 
           <Form.Item name="email" rules={validationRules.email}>
-            <Input prefix={<MailOutlined />} placeholder="Email" type="email" />
+            <Input
+              disabled={loading}
+              prefix={<MailOutlined />}
+              placeholder="Email"
+              type="email"
+            />
           </Form.Item>
 
           <Form.Item name="name" rules={validationRules.name}>
-            <Input prefix={<UserOutlined />} placeholder="Name" name="name" />
+            <Input
+              disabled={loading}
+              prefix={<UserOutlined />}
+              placeholder="Name"
+              name="name"
+            />
           </Form.Item>
 
           <Form.Item name="dateOfBirth" rules={validationRules.dateOfBirth}>
             <DatePicker
               style={{ width: "100%" }}
+              disabled={loading}
               placeholder="Date Of Birth"
               name="dateOfBirth"
             />
           </Form.Item>
 
+          {error && (
+            <Typography.Text type="danger">
+              {error.graphQLErrors[0].message}
+            </Typography.Text>
+          )}
+
           <Form.Item noStyle>
-            <Button type="primary" block htmlType="submit">
+            <Button loading={loading} type="primary" block htmlType="submit">
               REGISTER
             </Button>
           </Form.Item>
