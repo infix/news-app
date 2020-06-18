@@ -42,12 +42,15 @@ export interface Article {
   urlToImage: string;
 }
 
-type Props = { country: string; category: string };
 type FavData = { favourites: { url: string }[] };
+type Props = { country: string; category: string; showFav: boolean };
 
-export const NewsFeed: React.FC<Props> = ({ country, category }) => {
+export const NewsFeed: React.FC<Props> = ({ country, category, showFav }) => {
   const { data: favData, loading: favLoading } = useQuery<FavData>(FAVOURITES);
-  const { data, loading } = useQuery<{ news: Article[] }, Props>(GET_NEWS, {
+  const { data, loading } = useQuery<
+    { news: Article[] },
+    { country: string; category: string }
+  >(GET_NEWS, {
     variables: { country, category },
   });
 
@@ -55,12 +58,18 @@ export const NewsFeed: React.FC<Props> = ({ country, category }) => {
     () => new Set(favData?.favourites.map(f => f.url) || []),
     [favData],
   );
+  const news = useMemo(
+    () =>
+      (showFav ? data?.news.filter(a => favourites.has(a.url)) : data?.news) ||
+      [],
+    [data, showFav],
+  );
 
   if (loading || favLoading) return <Spin size="large" />;
 
   return (
     <List style={{ width: "100%" }}>
-      {data?.news.map(article => (
+      {news.map(article => (
         <Headline
           key={article.url}
           isFavourite={favourites.has(article.url)}
